@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Expense Dashboard</h1>
+    <div id="dashboard-plot"></div>
+    <script>
+       var jsonData = {graphJSON};
+        var plotlyData = JSON.parse(jsonData);
+        Plotly.newPlot('dashboard-plot', plotlyData.data, plotlyData.layout);
+    </script>
+    <a href="/">Go Back</a>
+</body>
+</html>

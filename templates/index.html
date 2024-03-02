@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Finance Manager</title>
+</head>
+<body>
+    <h1>Your Finance Manager</h1>
+    <form action="/add_entry" method="post">
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" required>
+        <br>
+        <label for="type">Type:</label>
+        <select name="type" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+        <br>
+        <label for="category">Category:</label>
+        <select name="category" required>
+            <option value="groceries">Groceries</option>
+            <option value="education">Education</option>
+            <option value="other">Other</option>
+        </select>
+        <br>
+        <label for="note">Note:</label>
+        <textarea name="note"></textarea>
+        <br>
+        <button type="submit">Add Entry</button>
+    </form>
+    <br>
+    <a href="/dashboard">View Dashboard</a>
+    <br>
+    <a href="/predict_expense">Predict Expense</a>
+</body>
+</html>
