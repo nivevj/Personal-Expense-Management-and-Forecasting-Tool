@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
-import plotly.express as px
+#from plotly import express as px
 from datetime import datetime
 from pymongo import MongoClient
 from prophet import Prophet
 import pandas as pd
+#import plotly.io as pio
 
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
@@ -77,8 +78,8 @@ def predict_expense():
 
     expense_df['Date']=pd.to_datetime(expense_df.Date)
     income_df['Date']=pd.to_datetime(income_df.Date)
-    expense_df['Date'] = pd.to_datetime(expense_df['Date'], format='%d-%M-%Y')
-    income_df['Date'] = pd.to_datetime(income_df['Date'], format='%d-%M-%Y')
+    expense_df['Date'] = pd.to_datetime(expense_df['Date'])
+    income_df['Date'] = pd.to_datetime(income_df['Date'])
 
     date=expense_df['Date'].dt.month
     expense_df.set_index('Date').groupby(pd.Grouper(freq='M'))
@@ -107,15 +108,22 @@ def predict_expense():
     predicted_expense = next_month_prediction  # Replace with your prediction logic
     return render_template('predict_expense.html', predicted_expense=predicted_expense)
 
-@app.route('/dashboard')
-def dashboard():
-    entries = list(mongo.db.entries.find())
-    df = pd.DataFrame(entries)
-    df['date'] = pd.to_datetime(df['date'],format='%d-%M-%Y')
-    fig = px.bar(df, x='date', y='amount', color='category', title='Income/Expense Overview')
+# @app.route('/dashboard')
+# def dashboard():
+#     mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
+#     client = MongoClient(mongo_uri)
 
-    graphJSON = px.to_json(fig)
-    return render_template('dashboard.html', graphJSON=graphJSON)
+#     db = client.income_expense_data
+#     collection = db.transactions
+
+#     transaction = list(collection.find()) 
+#     df = pd.DataFrame(transaction)
+
+#     df['Date'] = pd.to_datetime(df['Date'])
+#     fig = px.bar(df, x='Date', y='Amount', color='Category', title='Income/Expense Overview')
+
+#     graphJSON = pio.to_json(fig)
+#     return render_template('dashboard.html', graphJSON=graphJSON)
 
 if __name__ == '__main__':
     app.run(debug=True)

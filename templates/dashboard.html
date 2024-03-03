@@ -10,9 +10,11 @@
     <h1>Expense Dashboard</h1>
     <div id="dashboard-plot"></div>
     <script>
-       var jsonData = {graphJSON};
-        var plotlyData = JSON.parse(jsonData);
-        Plotly.newPlot('dashboard-plot', plotlyData.data, plotlyData.layout);
+        // // Parse the JSON string from the Flask backend
+        // var graphJSON = { graphJSON };
+
+        // // Load the Plotly graph into the specified div
+        // Plotly.newPlot('plotly-graph', graphJSON);
     </script>
     <a href="/">Go Back</a>
 </body>
