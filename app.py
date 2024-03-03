@@ -100,11 +100,11 @@ def predict_expense():
     model= p.fit(expense_df_TSA)
     future = p.make_future_dataframe(periods=36,freq='M')
     forecast_prediction = p.predict(future)
-
+    next_month_prediction = forecast_prediction[forecast_prediction['ds'] == forecast_prediction['ds'].max()]['yhat'].values[0]
     #Prophet model ----- end
 
 
-    predicted_expense = 0  # Replace with your prediction logic
+    predicted_expense = next_month_prediction  # Replace with your prediction logic
     return render_template('predict_expense.html', predicted_expense=predicted_expense)
 
 @app.route('/dashboard')
