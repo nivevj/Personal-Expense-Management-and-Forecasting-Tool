@@ -15,7 +15,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/expenseprediction'
+app.config['MONGO_URI'] = 'your_mongo_uri'
 mongo = PyMongo(app)
 
 @app.route('/')
@@ -46,7 +46,7 @@ def predict_expense():
     # This could involve training a machine learning model on past entries
     # For simplicity, we'll assume a basic rule-based prediction for now
     
-    mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
+    mongo_uri = "your_mongo_uri"
     client = MongoClient(mongo_uri)
 
     db = client.expenseprediction
