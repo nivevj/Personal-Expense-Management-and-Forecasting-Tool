@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
-#from plotly import express as px
+
 from datetime import datetime
 from pymongo import MongoClient
 from prophet import Prophet
 import pandas as pd
-#import plotly.io as pio
+
 
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
@@ -116,27 +116,14 @@ def predict_expense():
     predicted_expense = next_month_prediction  # Replace with your prediction logic
     return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category)
 
-# @app.route('/dashboard')
-# def dashboard():
-#     mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
-#     client = MongoClient(mongo_uri)
+@app.route('/transactions_this_month')
+def transactions_this_month():
+    # Fetch transactions for the current month
+    transactions = list(mongo.db.transactions.find({
+        '$or': [{'type': 'Expense'}, {'type': 'Income'}]
+    }))
+    return render_template('transactions_month.html', transactions=transactions)
 
-#     db = client.income_expense_data
-#     collection = db.transactions
-
-#     transaction = list(collection.find()) 
-#     df = pd.DataFrame(transaction)
-
-#     df['Date'] = pd.to_datetime(df['Date'])
-#     fig = px.bar(df, x='Date', y='Amount', color='Category', title='Income/Expense Overview')
-
-#     graphJSON = pio.to_json(fig)
-#     return render_template('dashboard.html', graphJSON=graphJSON)
-
-@app.route('/get_entries', methods=['GET'])
-def get_entries():
-    entries = list(mongo.db.transactions.find())
-    return jsonify(entries)
 
 if __name__ == '__main__':
     app.run(debug=True)
