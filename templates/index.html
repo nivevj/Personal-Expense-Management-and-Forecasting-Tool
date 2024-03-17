@@ -4,12 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Finance Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Your Finance Manager</h1>
+    <header>
+        <nav>
+            <button class="nav_button" action="">Home</button>
+            <button class="nav_button" action="">Add Transaction</button>
+            <button class="nav_button" action="">View Transactions</button>
+            <button class="nav_button" action="">Income</button>
+            <button class="nav_button" action="">Expenses</button>
+            <button class="nav_button"><a href="/predict_expense">Predict Expenses</a></button>
+        </nav>
+        
+    </header>
+    <br>
+    <h1>Add Transaction</h1>
+    <br>
     <form action="/add_entry" method="post">
         <label for="amount">Amount:</label>
-        <input type="number" name="amount" required>
+        <input type="number" name="amount" placeholder="Enter the amount" required>
         <br>
         <label for="type">Type:</label>
         <select name="type" required>
@@ -18,7 +35,7 @@
         </select>
         <br>
         <label for="category">Category:</label>
-        <select name="category" required>
+        <select name="category" required >
             <option value="Bank">Bank</option>
             <option value="Clothing">Clothing</option>
             <option value="Debt">Debt</option>
@@ -44,13 +61,17 @@
         </select>
         <br>
         <label for="note">Note:</label>
-        <textarea name="note"></textarea>
+        <textarea name="note" placeholder="Enter note"></textarea>
         <br>
-        <button type="submit">Add Entry</button>
+        <center>
+            <button class="add_btn"  type="submit">Add Entry</button>
+        </center>
+        
     </form>
     <!-- <br>
     <a href="/dashboard">View Dashboard</a> -->
     <br>
-    <a href="/predict_expense">Predict Expense</a>
+
+    <!-- <a href="/predict_expense">Predict Expense</a> -->
 </body>
 </html>

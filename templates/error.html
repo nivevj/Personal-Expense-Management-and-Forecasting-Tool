@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Error</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+            background-image: url('https://imgs.search.brave.com/jnbhopF701KRiLwG008yVV107nTkkRb8w3n1XmOnyZc/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/d2FsbHBhcGVyc2Fm/YXJpLmNvbS85NC85/NC9BQ1F0eUIuanBn'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Error Page {{error_message}}</h1>
+    <header>
+        <nav>
+            <button class="nav_button" action="">Home</button>
+            <button class="nav_button" action="">Add Transaction</button>
+            <button class="nav_button" action="">View Transactions</button>
+            <button class="nav_button" action="">Income</button>
+            <button class="nav_button" action="">Expenses</button>
+            <button class="nav_button" action="">Predict Expences</button>
+        </nav>
+        
+    </header>
+    <!-- <h1>Error Page </h1> -->
+    <br><br><br>
+    <h1 class="home_heading">Oops!!!</h1>
+    <p class="tagline">{{error_message}}</p>
 </body>
 </html>
