@@ -13,10 +13,19 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression 
 import numpy as np
 
+
+
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'your_mongo_uri'
+
+app.config['MONGO_URI'] = 'mongodb+srv://nivethaa0310:nivethaa@cluster0.wp2w8d4.mongodb.net/Transaction'
 mongo = PyMongo(app)
+
+mongo_uri = "mongodb+srv://nivethaa0310:nivethaa@cluster0.wp2w8d4.mongodb.net/"
+client = MongoClient(mongo_uri)
+
+db = client.Transaction
+collection = db.transactions
 
 @app.route('/')
 def index():
@@ -46,12 +55,6 @@ def predict_expense():
     # This could involve training a machine learning model on past entries
     # For simplicity, we'll assume a basic rule-based prediction for now
     
-    mongo_uri = "your_mongo_uri"
-    client = MongoClient(mongo_uri)
-
-    db = client.expenseprediction
-    collection = db.transactions
-    
     transaction = list(collection.find()) 
     transaction_df = pd.DataFrame(transaction)
     
@@ -69,7 +72,7 @@ def predict_expense():
     #most spent category
     most_frequent_category = category_counts.idxmax()
     #average spending per category
-    #ERROR avg_spending_category=expense_df.groupby('Category').mean().sort_values(by='Amount')
+    avg_spending_category = expense_df.groupby('category').agg({'amount': 'mean'}).reset_index()
     #total expense
     expense_amount=expense_df.amount.sum()
     #print("expense amount: "+expense_amount)
@@ -110,9 +113,8 @@ def predict_expense():
     next_month_prediction = forecast_prediction[forecast_prediction['ds'] == forecast_prediction['ds'].max()]['yhat'].values[0]
     #Prophet model ----- end
 
-
     predicted_expense = next_month_prediction  # Replace with your prediction logic
-    return render_template('predict_expense.html', predicted_expense=predicted_expense)
+    return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category)
 
 # @app.route('/dashboard')
 # def dashboard():
@@ -130,6 +132,11 @@ def predict_expense():
 
 #     graphJSON = pio.to_json(fig)
 #     return render_template('dashboard.html', graphJSON=graphJSON)
+
+@app.route('/get_entries', methods=['GET'])
+def get_entries():
+    entries = list(mongo.db.transactions.find())
+    return jsonify(entries)
 
 if __name__ == '__main__':
     app.run(debug=True)
