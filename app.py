@@ -5,7 +5,11 @@ from datetime import datetime
 from pymongo import MongoClient
 from prophet import Prophet
 import pandas as pd
-
+# Plotting graph
+from flask import Flask, send_file
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
@@ -114,8 +118,12 @@ def predict_expense():
     #Prophet model ----- end
 
     predicted_expense = next_month_prediction  # Replace with your prediction logic
-    return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category)
+    return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category) 
+    
+    
+    
 
+    
 @app.route('/transactions_this_month')
 def transactions_this_month():
     # Fetch transactions for the current month
@@ -123,6 +131,31 @@ def transactions_this_month():
         '$or': [{'type': 'Expense'}, {'type': 'Income'}]
     }))
     return render_template('transactions_month.html', transactions=transactions)
+
+   
+
+@app.route('/plot.png')
+def plot_png():
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    data = list(collection.find({}))
+    date = [entry['date'] for entry in data]
+    income = [entry['amount'] for entry in data]
+    
+    axis.plot(date, income, color='blue', label='Income')
+    
+    # Rotate x-axis labels by 45 degrees
+    
+    
+    axis.set_xlabel('Date')
+    axis.set_ylabel('Amount ($)')
+    axis.legend()
+    
+    output = BytesIO()
+    fig.savefig(output, format='png')
+    output.seek(0)
+    return send_file(output, mimetype='image/png')
+
 
 
 if __name__ == '__main__':
