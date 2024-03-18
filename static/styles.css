@@ -21,7 +21,7 @@ header{
     padding-top: 25px;
 }
 nav{
-    margin-left: 30%;
+    margin-left: 45%;
 }
 
 .nav_button{
@@ -91,7 +91,7 @@ a {
     color: #214761; /* Navy blue link color */
     text-decoration: none;
     display: inline-block;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
 a:hover {
@@ -129,4 +129,23 @@ a:hover {
 .home_heading{
     font-size: 3em;
     font-weight: bold;
+}
+
+.predict_box{
+    background-color: #ffffffff; /* White background for form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    max-width: 60%;
+    height: 200px;
+    margin: 20px auto;
+    color: black;
+}
+
+.pr_h{
+    color: black;
+}
+.pr_p{
+    text-align: center;
+    
 }
