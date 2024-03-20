@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
+
 from datetime import datetime
 from pymongo import MongoClient
 from prophet import Prophet
@@ -13,7 +14,7 @@ mongo = PyMongo(app)
 mongo_uri = "your_mongo_uri"
 client = MongoClient(mongo_uri)
 
-db = client.expenseprediction
+db = client.db_name
 collection = db.transactions
 
 @app.route('/')
@@ -66,7 +67,7 @@ def predict_expense():
     
     #average spending per category
     avg_spending_category = expense_df.groupby('category').agg({'amount': 'mean'}).reset_index()
-    
+
     #total expense
     expense_amount=expense_df.amount.sum()
     #print("expense amount: "+expense_amount)
@@ -108,25 +109,18 @@ def predict_expense():
     next_month_prediction = forecast_prediction[forecast_prediction['ds'] == forecast_prediction['ds'].max()]['yhat'].values[0]
     #Prophet model ----- end
 
-    predicted_expense = next_month_prediction
+    predicted_expense = next_month_prediction  # Replace with your prediction logic
     return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category)
 
-# @app.route('/dashboard')
-# def dashboard():
-#     mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
-#     client = MongoClient(mongo_uri)
 
-#     db = client.income_expense_data
-#     collection = db.transactions
+@app.route('/transactions_this_month')
+def transactions_this_month():
+    # Fetch transactions for the current month
+    transactions = list(mongo.db.transactions.find({
+        '$or': [{'type': 'Expense'}, {'type': 'Income'}]
+    }))
+    return render_template('transactions_month.html', transactions=transactions)
 
-#     transaction = list(collection.find()) 
-#     df = pd.DataFrame(transaction)
-
-#     df['Date'] = pd.to_datetime(df['Date'])
-#     fig = px.bar(df, x='Date', y='Amount', color='Category', title='Income/Expense Overview')
-
-#     graphJSON = pio.to_json(fig)
-#     return render_template('dashboard.html', graphJSON=graphJSON)
 
 if __name__ == '__main__':
     app.run(debug=True)
