@@ -9,10 +9,10 @@ from matplotlib.figure import Figure
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/expense_tracking'
+app.config['MONGO_URI'] = '<your mongo uri>'
 mongo = PyMongo(app)
 
-mongo_uri = "mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/"
+mongo_uri = "<your mongo uri>"
 client = MongoClient(mongo_uri)
 db = client.expense_tracking
 collection = db.transactions
