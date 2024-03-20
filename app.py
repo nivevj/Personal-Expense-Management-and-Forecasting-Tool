@@ -1,25 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
-#from plotly import express as px
 from datetime import datetime
 from pymongo import MongoClient
 from prophet import Prophet
 import pandas as pd
-#import plotly.io as pio
-
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import LinearRegression 
-import numpy as np
 
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/expenseprediction'
 mongo = PyMongo(app)
 
+mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
+client = MongoClient(mongo_uri)
+
+db = client.expenseprediction
+collection = db.transactions
+
 @app.route('/')
 def index():
+    return render_template('home.html')
+
+@app.route('/form')
+def form():
     return render_template('index.html')
 
 @app.route('/add_entry', methods=['POST'])
@@ -42,15 +44,7 @@ def add_entry():
 
 @app.route('/predict_expense')
 def predict_expense():
-    # Implement prediction logic based on historical data
-    # This could involve training a machine learning model on past entries
-    # For simplicity, we'll assume a basic rule-based prediction for now
-    
-    mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
-    client = MongoClient(mongo_uri)
-
-    db = client.expenseprediction
-    collection = db.transactions
+    #Using Prophet algorithm to predict the expense of the next month
     
     transaction = list(collection.find()) 
     transaction_df = pd.DataFrame(transaction)
@@ -66,13 +60,17 @@ def predict_expense():
     
     categories = expense_df['category']
     category_counts = categories.value_counts()
+
     #most spent category
     most_frequent_category = category_counts.idxmax()
+    
     #average spending per category
-    #ERROR avg_spending_category=expense_df.groupby('Category').mean().sort_values(by='Amount')
+    avg_spending_category = expense_df.groupby('category').agg({'amount': 'mean'}).reset_index()
+    
     #total expense
     expense_amount=expense_df.amount.sum()
     #print("expense amount: "+expense_amount)
+    
     #total income
     income_amount=income_df.amount.sum()
     #print("income amount: "+income_amount)
@@ -110,9 +108,8 @@ def predict_expense():
     next_month_prediction = forecast_prediction[forecast_prediction['ds'] == forecast_prediction['ds'].max()]['yhat'].values[0]
     #Prophet model ----- end
 
-
-    predicted_expense = next_month_prediction  # Replace with your prediction logic
-    return render_template('predict_expense.html', predicted_expense=predicted_expense)
+    predicted_expense = next_month_prediction
+    return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category)
 
 # @app.route('/dashboard')
 # def dashboard():
