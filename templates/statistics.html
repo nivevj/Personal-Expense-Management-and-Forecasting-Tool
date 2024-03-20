@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions</title>
+    <title>Statistics</title>
     <link rel="stylesheet" href="static\styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,10 +12,10 @@
 <body>
     <header>
         <nav>
-            <button class="nav_button" method="/home"><a href="/home">Home</a></button>
+            <button class="nav_button" method="/"><a href="/">Home</a></button>
             <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
             <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
-            <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
+            <button class="nav_button" method=""><a href="">Statistics</a></button>
             <!-- <button class="nav_button" action="">Income</button>
             <button class="nav_button" action="">Expenses</button> -->
             <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
@@ -26,8 +26,17 @@
     
     <h1>Statistics</h1>
     <br>
-    <center>
-        
-    </center>
+    <div class="stat_main">
+        <div class="buttons_container">
+            <button class="stat_btn">Income</button>
+            <button class="stat_btn">Expenses</button>
+            <button class="stat_btn">Income & Expenses</button>
+            <button class="stat_btn">Category-wise distribution</button>
+        </div>
+        <div class="stat_graph">
+            <img src="/stat.png" alt="no img">
+        </div>
+    </div>
+    
 </body>
 </html>

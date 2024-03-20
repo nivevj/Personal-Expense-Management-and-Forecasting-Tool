@@ -12,9 +12,9 @@
 <body>
     <header>
         <nav>
-            <button class="nav_button" method="/home"><a href="/home">Home</a></button>
+            <button class="nav_button" method="/"><a href="/">Home</a></button>
             <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
-            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
+            <button class="nav_button" method=""><a href="">Transactions</a></button>
             <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
             <!-- <button class="nav_button" action="">Income</button>
             <button class="nav_button" action="">Expenses</button> -->
@@ -26,22 +26,31 @@
     <div class="container">
         <div class="box">
             <h2>Income</h2>
-            <h2 class="income">{{income_amount}}</h2>
+            <h2 class="income">₹{{income_amount}}</h2>
         </div>
         <div class="box">
             <h2>Expenses</h2>
-            <h2 class="expenses">{{expense_amount}}</h2>
+            <h2 class="expenses">₹{{expense_amount}}</h2>
         </div>
         <div class="box">
             <h2>Total Balance</h2>
-            <h2 class="t_balance">{{total_balance}}</h2>
+            <h2 class="t_balance">₹{{total_balance}}</h2>
         </div>
     </div>
-
-    <br><br>
-    <h1>List of Transactions</h1>
     <br>
     <center>
+
+        {% if current_expense > predicted_month_expense %}
+            <br>
+            <div class="alert">
+            **Warning!** Current monthly expense exceeded the predicted monthly expense by ₹{{current_expense - predicted_month_expense}}.
+            </div>
+        {% endif %}
+
+        <br><br>
+        <h1>List of Transactions</h1>
+        <br>
+    
         <div class="trans_box">
             <table border="1" class="avg_table" style="width:70%">
                 <tr>
@@ -55,7 +64,14 @@
                 <tr>
                     <td>{{ transaction.date }}</td>
                     <td>{{ transaction.type }}</td>
-                    <td>{{ transaction.amount }}</td>
+                    {% if transaction.type == 'Expense' %}
+                        <td style="color: red">
+                    {% else %}
+                        <td style="color: green">
+                    {% endif %}
+
+                    {{ transaction.amount }}
+                    </td>
                     <td>{{ transaction.category }}</td>
                     <td>{{ transaction.note }}</td>
                 </tr>

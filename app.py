@@ -9,10 +9,10 @@ from matplotlib.figure import Figure
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = '<your mongo uri>'
+app.config['MONGO_URI'] = 'mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/expense_tracking'
 mongo = PyMongo(app)
 
-mongo_uri = "<your mongo uri>"
+mongo_uri = "mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/"
 client = MongoClient(mongo_uri)
 db = client.expense_tracking
 collection = db.transactions
@@ -127,7 +127,10 @@ def transactions_this_month():
     income_amount=income_df.amount.sum()
     total_balance=income_amount-expense_amount
 
-    return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance)
+    current_expense = 100
+    predicted_month_expense = 80
+
+    return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance,current_expense=current_expense, predicted_month_expense=predicted_month_expense)
 
 @app.route('/plot.png')
 def plot_png():

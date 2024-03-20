@@ -42,6 +42,8 @@ nav{
 
 .nav_button:hover{
     background-color: rgb(234, 234, 234);
+    transform: scale(1.1,1.1);
+    transition-duration: 0.5s;
     /* color: white; */
 }
 
@@ -85,6 +87,8 @@ textarea {
 .add_btn:hover {
     background-color: #0e2a47; /* Darker navy blue on hover */
     color: #ffd700;
+    transform: scale(1.1,1.1);
+    transition-duration: 0.5s;
 }
 
 a {
@@ -93,11 +97,6 @@ a {
     display: inline-block;
     /* margin-top: 10px; */
 }
-
-a:hover {
-    text-decoration: underline;
-}
-
 
 .tagline {
     font-size: 1.5em;
@@ -112,11 +111,14 @@ a:hover {
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
+    cursor: pointer;
 }
 
 .started_btn:hover {
     background-color: #155d80; /* Darker blue on hover */
     color: white;
+    transform: scale(1.1,1.1);
+    transition-duration: 0.5s;
 }
 .home_container {
     text-align: center;
@@ -137,7 +139,7 @@ a:hover {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
     max-width: 50%;
-    height: 200px;
+    height: 160px;
     margin: 20px auto;
     color: black;
 }
@@ -183,7 +185,7 @@ a:hover {
 /* container which contains income, expense and total balance box */
 .container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     margin-bottom: 20px;
 }
 /* the boxes income, expenses and balance individually */
@@ -228,3 +230,46 @@ a:hover {
     width: 70%;
     
 }
+
+.stat_main{
+    display: flex;
+}
+.buttons_container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+}
+
+.stat_btn{
+    padding: 20px;
+    border-radius: 3px;
+    border: 0px;
+    margin: 15px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    font-family: "Signika", sans-serif;
+    cursor: pointer;
+}
+.stat_btn:hover{
+    /* padding: 25px;
+    font-size: 25px; */
+    transform: scale(1.1,1.1);
+    transition-duration: 0.5s;
+}
+
+.stat_graph{
+    background-color: #fff;
+    width: 40%;
+    height: 60%;
+    margin-left: 15%;
+    border-radius: 3px;
+    /* margin-top: 3%; */
+}
+
+.alert {
+    padding: 10px 20px;
+    margin: 10px;
+    border: 1px solid red;
+    color: red;
+    width: fit-content;
+  }
