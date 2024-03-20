@@ -12,13 +12,13 @@
 <body>
     <header>
         <nav>
-            <button class="nav_button"><a href="/home">Home</a></button>
-            <button class="nav_button"><a href="/index">Add Transaction</a></button>
-            <button class="nav_button"><a href="/transactions_month">Transactions</a></button>
-            <button class="nav_button"><a href="">Statistics</a></button>
+            <button class="nav_button" method="/home"><a href="/home">Home</a></button>
+            <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
+            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
+            <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
             <!-- <button class="nav_button" action="">Income</button>
             <button class="nav_button" action="">Expenses</button> -->
-            <button class="nav_button"><a href="/predict_expense">Predict Expenses</a></button>
+            <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
         </nav>
         
     </header>
@@ -29,39 +29,41 @@
 
     <div class="predict_box">
         <h1 class="pr_h">Predict Expense for the next month</h1>
-        <br>
+        <!-- <br>  -->
         <p class="pr_p">₹{{ predicted_expense }}</p>
 
     </div>
 
     <br><br>
 
-    <div class="predict_box">
+    <div class="avg_box">
         <h1 class="pr_h">Average Spending Category</h1>
         <br>
-        <p class="pr_p">₹{{ avg_spending_category }}</p>
+        <!-- <p class="pr_p">₹{{ avg_spending_category }}</p> -->
+    
+        <center>
+            <table border="1" class="avg_table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <!-- <th>Type</th> -->
+                        <th>Amount</th>
+                        <!-- <th>Category</th>
+                        <th>Note</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                {% for index, row in avg_spending_category.iterrows() %}
+                    <tr>
+                        <td>{{ row['category'] }}</td>
+                        <td>{{ row['amount'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- {{transactions}} -->
+        </center>
     </div>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <!-- <th>Type</th> -->
-                <th>Amount</th>
-                <!-- <th>Category</th>
-                <th>Note</th> -->
-            </tr>
-        </thead>
-        <tbody>
-        {% for index, row in avg_spending_category.iterrows() %}
-            <tr>
-                <td>{{ row['category'] }}</td>
-                <td>{{ row['amount'] }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <!-- {{transactions}} -->
 
     
     <!-- <a href="/">Go Back</a> -->

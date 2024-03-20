@@ -9,17 +9,33 @@ from matplotlib.figure import Figure
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = '<your mongo uri>'
+app.config['MONGO_URI'] = 'mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/expense_tracking'
 mongo = PyMongo(app)
 
-mongo_uri = "<your mongo uri>"
+mongo_uri = "mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/"
 client = MongoClient(mongo_uri)
 db = client.expense_tracking
 collection = db.transactions
 
 @app.route('/')
-def index():
+def home():
     return render_template('home.html')
+
+@app.route('/statistics')
+def statistics():
+    return render_template('statistics.html')
+
+# @app.route('/predict_expense')
+
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
+# @app.route('/transactions_month')
+# def transactions():
+#     return render_template('transactions_month.html')
+
 
 @app.route('/add_entry', methods=['POST'])
 def add_entry():
@@ -40,6 +56,10 @@ def add_entry():
     return redirect(url_for('index'))
 
 @app.route('/predict_expense')
+
+# def predict():
+#     return render_template('predict_expense.html')
+
 def predict_expense():
     # Implement prediction logic based on historical data
     # This could involve training a machine learning model on past entries
@@ -85,7 +105,7 @@ def predict_expense():
     future = p.make_future_dataframe(periods=36,freq='M')
     forecast_prediction = p.predict(future)
     next_month_prediction = forecast_prediction[forecast_prediction['ds'] == forecast_prediction['ds'].max()]['yhat'].values[0]
-    
+    next_month_prediction=next_month_prediction.round().astype(int)
     predicted_expense = next_month_prediction
     return render_template('predict_expense.html', predicted_expense=predicted_expense,avg_spending_category=avg_spending_category) 
 
@@ -94,7 +114,20 @@ def transactions_this_month():
     transactions = list(mongo.db.transactions.find({
         '$or': [{'type': 'Expense'}, {'type': 'Income'}]
     }))
-    return render_template('transactions_month.html', transactions=transactions)
+
+    transaction = list(collection.find()) 
+    transaction_df = pd.DataFrame(transaction)
+    transaction_df['amount']=transaction_df['amount'].astype('float')
+    missing_values=transaction_df.columns[transaction_df.isna().any()]
+    income_df=transaction_df[transaction_df['type']== 'Income']
+    income_df['amount']=income_df['amount'].astype('int')
+    expense_df=transaction_df[transaction_df['type']== 'Expense']
+    expense_df['amount']=expense_df['amount'].astype('int')
+    expense_amount=expense_df.amount.sum()
+    income_amount=income_df.amount.sum()
+    total_balance=income_amount-expense_amount
+
+    return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance)
 
 @app.route('/plot.png')
 def plot_png():

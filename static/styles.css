@@ -136,16 +136,95 @@ a:hover {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    max-width: 60%;
+    max-width: 50%;
     height: 200px;
     margin: 20px auto;
     color: black;
 }
 
+.avg_box{
+    background-color: #ffffffff; /* White background for form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 50%;
+    height: 70%;
+    margin: 20px auto;
+    color: black;
+}
 .pr_h{
     color: black;
 }
 .pr_p{
+    text-align: center; 
+    font-size: 25px;
+}
+
+.avg_table {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.avg_table th,
+.avg_table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.avg_table th {
+    background-color: #f2f2f2;
+    color: #0e2a47;
+}
+
+.avg_table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+/* container which contains income, expense and total balance box */
+.container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+/* the boxes income, expenses and balance individually */
+.box {
+    /* width: calc(33.33% - 10px); */
+    width: 20%;
+    background-color: #fff;
+    color: #0e2a47;
+    padding: 10px;
+    /* border: 1px solid #000; */
+
+    border-radius: 3px;;
+    box-sizing: border-box;
     text-align: center;
+}
+
+.expenses{
+    color: red;
+}
+
+.income{
+    color: green;
+}
+.t_balance{
+    color: black;
+}
+
+.trans_box{
+    background-color: #ffffffff; /* White background for form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 60%;
+    height: 70%;
+    margin: 20px auto;
+    color: black;
+    /* padding: 20px 0px; */
+    padding-top: 50px;
+}
+
+.trans_table{
+    width: 70%;
     
 }
