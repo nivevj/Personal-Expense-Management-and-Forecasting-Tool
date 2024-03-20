@@ -7,10 +7,10 @@ import pandas as pd
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/expenseprediction'
+app.config['MONGO_URI'] = 'your_mongo_uri/db_name'
 mongo = PyMongo(app)
 
-mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/"
+mongo_uri = "your_mongo_uri"
 client = MongoClient(mongo_uri)
 
 db = client.expenseprediction
