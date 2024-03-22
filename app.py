@@ -6,13 +6,14 @@ from prophet import Prophet
 import pandas as pd
 from io import BytesIO
 from matplotlib.figure import Figure
+import numpy as np
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = '<your mongo uri>'
+app.config['MONGO_URI'] = 'mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/expense_tracking'
 mongo = PyMongo(app)
 
-mongo_uri = "<your mongo uri>"
+mongo_uri = "mongodb+srv://narrajayani:jayanimongo@cluster0.ngsa6zf.mongodb.net/"
 client = MongoClient(mongo_uri)
 db = client.expense_tracking
 collection = db.transactions
@@ -23,7 +24,7 @@ def home():
 
 @app.route('/statistics')
 def statistics():
-    return render_template('statistics.html')
+    return render_template('statistics.html', graph='plot.png')
 
 # @app.route('/predict_expense')
 
@@ -132,36 +133,210 @@ def transactions_this_month():
 
     return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance,current_expense=current_expense, predicted_month_expense=predicted_month_expense)
 
+
 @app.route('/plot.png')
 def plot_png():
-    fig = Figure()
-    axis = fig.add_subplot(1, 1, 1)
+    fig = Figure(figsize=(10, 7))  # Adjust figure size if needed
+    fig.subplots_adjust(bottom=0.15)  # Set bottom spacing to a smaller value
+
+    # Add subplot for income alone
+    axis1 = fig.add_subplot(1, 1, 1)  # Use a single subplot
+    axis1.set_title('Income')
+
+
     data = list(collection.find({}))
+
     # Convert 'date' field to datetime
     for entry in data:
         entry['date'] = pd.to_datetime(entry['date'])
+
     start_date = pd.to_datetime('2022-01-01')
     end_date = pd.to_datetime('2022-01-31')
+
     # Filter data between start and end dates
     filtered_data = [entry for entry in data if start_date <= entry['date'] <= end_date]
+
     date = [entry['date'] for entry in filtered_data]
-    expense = [entry['amount'] for entry in filtered_data]
-    axis.plot(date, expense, color='blue', label='Expense')
-    num_ticks = 10  # Adjust the number of ticks as needed
-    num_points = len(date)
-    tick_spacing = num_points // num_ticks
-    x_ticks = date[::tick_spacing]  # Select ticks with spacing
-    x_tick_labels = [tick.strftime('%Y-%m-%d') for tick in x_ticks]  # Format tick labels
+    income = []
+    expense = []
+
+    for entry in filtered_data:
+        if entry['type'] == 'Income':
+            income.append(entry['amount'])
+            expense.append(0)  # Replace None with 0 for expense
+        else:
+            income.append(0)  # Replace None with 0 for income
+            expense.append(entry['amount'])
+
+    # Plot income alone
+    axis1.bar(date, income, color='green', label='Income')
+    #axis1.fill_between(date, np.nan_to_num(income), color='lightgreen')
+    axis1.set_xlabel('Date')
+    axis1.set_ylabel('Income ($)')
+    axis1.legend() 
+
+    output = BytesIO()
+    fig.savefig(output, format='png', bbox_inches='tight')
+    output.seek(0)
+
+    return send_file(output, mimetype='image/png')
+
+# Expense 
     
-    axis.set_xticks(x_ticks)
-    axis.set_xticklabels(x_tick_labels, rotation=90)  #
-    axis.set_xlabel('Date')
-    axis.set_ylabel('Amount ($)')
-    axis.legend()
+@app.route('/plot1.png')
+def plot1_png():
+    fig = Figure(figsize=(10,6)) 
+    fig.subplots_adjust(hspace=0.5)
+
+    # Add subplot for income alone
+    axis2 = fig.add_subplot(1, 1, 1)  # 3 rows, 1 column, subplot 1
+    axis2.set_title('Expense')
+    
+    data = list(collection.find({}))
+
+    # Convert 'date' field to datetime
+    for entry in data:
+        entry['date'] = pd.to_datetime(entry['date'])
+
+    start_date = pd.to_datetime('2022-01-01')
+    end_date = pd.to_datetime('2022-01-31')
+
+    # Filter data between start and end dates
+    filtered_data = [entry for entry in data if start_date <= entry['date'] <= end_date]
+
+    date = [entry['date'] for entry in filtered_data]
+    income = []
+    expense = []
+
+    for entry in filtered_data:
+        if entry['type'] == 'Income':
+            income.append(entry['amount'])
+            expense.append(0)  # Replace None with 0 for expense
+        else:
+            income.append(0)  # Replace None with 0 for income
+            expense.append(entry['amount'])
+    
+    axis2.bar(date, expense, color='red', label='Expense')
+    #axis2.fill_between(date, np.nan_to_num(expense), color='lightcoral')
+    axis2.set_xlabel('Date')
+    axis2.set_ylabel('Expense ($)')
+    axis2.legend()
+    
+
     output = BytesIO()
     fig.savefig(output, format='png')
     output.seek(0)
+
+    return send_file(output, mimetype='image/png') 
+
+@app.route('/plot2.png')
+def plot2_png():
+    fig = Figure(figsize=(10, 6))  # Adjust figsize here if needed
+
+    # Adjust bottom spacing to reduce whitespace
+    fig.subplots_adjust(top=0.85, bottom=0.15)  
+
+    # Add subplot for income vs expense comparison
+    axis3 = fig.add_subplot(4, 1, 3)  # 3 rows, 1 column, subplot 3
+    axis3.set_title('Income vs Expense')
+
+    data = list(collection.find({}))
+
+    # Convert 'date' field to datetime
+    for entry in data:
+        entry['date'] = pd.to_datetime(entry['date'])
+
+    start_date = pd.to_datetime('2022-01-01')
+    end_date = pd.to_datetime('2022-01-31')
+
+    # Filter data between start and end dates
+    filtered_data = [entry for entry in data if start_date <= entry['date'] <= end_date]
+
+    date = [entry['date'] for entry in filtered_data]
+    income = []
+    expense = []
+
+    for entry in filtered_data:
+        if entry['type'] == 'Income':
+            income.append(entry['amount'])
+            expense.append(0)  # Replace None with 0 for expense
+        else:
+            income.append(0)  # Replace None with 0 for income
+            expense.append(entry['amount'])
+    # Plot income vs expense comparison
+    axis3.bar(date, income, color='green', label='Income')
+    axis3.bar(date, expense, color='red', label='Expense')
+    
+    income_exceeds_expense = np.array(income) > np.array(expense)
+    expense_exceeds_income = np.array(expense) > np.array(income)
+
+    # Fill between income and expense curves where income exceeds expense with light green color
+    #axis3.fill_between(date, np.nan_to_num(income), np.nan_to_num(expense), where=income_exceeds_expense, color='lightgreen', interpolate=True)
+
+    # Fill between income and expense curves where expense exceeds income with light red color
+    #axis3.fill_between(date, np.nan_to_num(income), np.nan_to_num(expense), where=expense_exceeds_income, color='lightcoral', interpolate=True)
+
+    axis3.set_xlabel('Date')
+    axis3.set_ylabel('Amount ($)')
+    axis3.legend()  
+
+    output = BytesIO()
+    fig.savefig(output, format='png', bbox_inches='tight')
+    output.seek(0)
+
     return send_file(output, mimetype='image/png')
+
+# barchart for categories
+
+@app.route('/plot3.png')
+def plot3_png():
+    fig = Figure(figsize=(10, 7))  # Adjust figure size if needed
+    fig.subplots_adjust(bottom=0.15)
+    
+    # Add subplot for expense categories comparison
+    axis4 = fig.add_subplot(1, 1, 1)  # 3 rows, 1 column, subplot 3
+    axis4.set_title('Expense Categories') 
+
+    data = list(collection.find({}))
+
+    # Convert 'date' field to datetime
+    for entry in data:
+        entry['date'] = pd.to_datetime(entry['date'])
+
+    start_date = pd.to_datetime('2022-01-01')
+    end_date = pd.to_datetime('2022-01-31')
+
+    # Filter data between start and end dates
+    filtered_data = [entry for entry in data if start_date <= entry['date'] <= end_date]
+
+    date = [entry['date'] for entry in filtered_data]
+    income = []
+    expense = []
+
+    for entry in filtered_data:
+        if entry['type'] == 'Income':
+            income.append(entry['amount'])
+            expense.append(0)  # Replace None with 0 for expense
+        else:
+            income.append(0)  # Replace None with 0 for income
+            expense.append(entry['amount'])
+
+    
+
+    expense_df = pd.DataFrame(filtered_data)
+    expense_df = expense_df[expense_df['type'] == 'Expense']
+    category_counts = expense_df['category'].value_counts()
+    category_names = category_counts.index
+    category_values = category_counts.values
+    axis4.bar(category_names, category_values, color='blue')
+    axis4.set_ylabel('Frequency')
+
+    output = BytesIO()
+    fig.savefig(output, format='png', bbox_inches='tight')
+    output.seek(0)
+
+    return send_file(output, mimetype='image/png')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

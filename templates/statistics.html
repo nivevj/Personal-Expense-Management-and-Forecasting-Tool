@@ -28,15 +28,36 @@
     <br>
     <div class="stat_main">
         <div class="buttons_container">
-            <button class="stat_btn">Income</button>
-            <button class="stat_btn">Expenses</button>
-            <button class="stat_btn">Income & Expenses</button>
-            <button class="stat_btn">Category-wise distribution</button>
+            <button class="stat_btn" id="plot"><a href="/plot.png">Income</a></button>
+            <button class="stat_btn" id="plot1"><a href="/plot1.png">Expenses</a></button>
+            <button class="stat_btn" id="plot2"><a href="/plot2.png">Income & Expenses</a></button>
+            <button class="stat_btn" id="plot3"><a href="/plot3.png">Category-wise distribution</a></button>
         </div>
-        <div class="stat_graph">
-            <img src="/stat.png" alt="no img">
+
+        <div class="stat_graph" height="10px">
+            <!-- <h2 class="graph_title">{{text}}</h2> -->
+            <img class="plot_img" src="/plot.png" alt="no img">
         </div>
     </div>
     
+    <script>
+        const buttons = document.querySelectorAll('.stat_btn');
+        const image = document.querySelector('.stat_graph img');
+
+        // Function to update image source based on button text
+        function updateImage(buttonText) {
+        const imageName = buttonText.toLowerCase().replace(/\s+/g, '');  // Extract image name from button text
+        image.src = `/${imageName}.png`;  // Set image source based on extracted name
+        }
+
+        // Add click event listener to each button
+        buttons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            const clickedButtonId = event.target.id;
+            // event.preventDefault(); // Prevent default form submission behavior
+            updateImage(clickedButtonId); // Update image based on button text content
+        });
+        });
+    </script>
 </body>
 </html>
