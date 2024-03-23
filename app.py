@@ -15,7 +15,7 @@ mongo_uri = "your_mongo_uri"
 client = MongoClient(mongo_uri)
 
 db = client.db_name
-collection = db.transactions
+collection = db.collection_name
 
 @app.route('/')
 def index():
