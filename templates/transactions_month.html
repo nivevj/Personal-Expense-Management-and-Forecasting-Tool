@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h3 class="nav_title">Your Finance Manager</h3>
+        <nav>
+            <button class="nav_button" method="/"><a href="/">Home</a></button>
+            <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
+            <button class="nav_button" method=""><a href="">Transactions</a></button>
+            <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
+            <!-- <button class="nav_button" action="">Income</button>
+            <button class="nav_button" action="">Expenses</button> -->
+            <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
+        </nav>
+        
+    </header>
+    <br><br><br>
+    <div class="container">
+        <div class="box">
+            <h2>Income</h2>
+            <h2 class="income">₹{{income_amount}}</h2>
+        </div>
+        <div class="box">
+            <h2>Expenses</h2>
+            <h2 class="expenses">₹{{expense_amount}}</h2>
+        </div>
+        <div class="box">
+            <h2>Total Balance</h2>
+            <h2 class="t_balance">₹{{total_balance}}</h2>
+        </div>
+    </div>
+    <br>
+    <center>
+
+        {% if current_expense > predicted_month_expense %}
+            <br>
+            <div class="alert">
+            **Warning!** Current monthly expense exceeded the predicted monthly expense by ₹{{current_expense - predicted_month_expense}}.
+            </div>
+        {% endif %}
+
+        <br><br>
+        <h1>List of Transactions</h1>
+        <br>
+    
+        <div class="trans_box">
+            <table border="1" class="avg_table" style="width:70%">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Note</th>
+                </tr>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.type }}</td>
+                    {% if transaction.type == 'Expense' %}
+                        <td style="color: red">
+                    {% else %}
+                        <td style="color: green">
+                    {% endif %}
+
+                    {{ transaction.amount }}
+                    </td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.note }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <!-- {{transactions}} -->
+        </div>
+    </center>
+</body>
+</html>

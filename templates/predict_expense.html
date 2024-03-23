@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Expense</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h3 class="nav_title">Your Finance Manager</h3>
+        <nav>
+            <button class="nav_button" method="/"><a href="/">Home</a></button>
+            <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
+            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
+            <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
+            <!-- <button class="nav_button" action="">Income</button>
+            <button class="nav_button" action="">Expenses</button> -->
+            <button class="nav_button" method=""><a href="">Predict Expenses</a></button>
+        </nav>
+        
+    </header>
+    
+    <!-- <a href="/">Go Back</a> -->
+    <!-- avg_spending_category -->
+    <br><br><br>
+
+    <div class="predict_box">
+        <h1 class="pr_h">Predict Expense for the next month</h1>
+        <!-- <br>  -->
+        <p class="pr_p">₹{{ predicted_expense }}</p>
+
+    </div>
+
+    <br><br>
+
+    <div class="avg_box">
+        <h1 class="pr_h">Average Spending Category</h1>
+        <br>
+        <!-- <p class="pr_p">₹{{ avg_spending_category }}</p> -->
+    
+        <center>
+            <table border="1" class="avg_table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <!-- <th>Type</th> -->
+                        <th>Amount</th>
+                        <!-- <th>Category</th>
+                        <th>Note</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                {% for index, row in avg_spending_category.iterrows() %}
+                    <tr>
+                        <td>{{ row['category'] }}</td>
+                        <td>{{ row['amount'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- {{transactions}} -->
+        </center>
+    </div>
+
+    
+    <!-- <a href="/">Go Back</a> -->
+    <!-- <img src="/plot.png" alt="no img"> -->
+
+</body>
+</html>
