@@ -17,9 +17,8 @@
             <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
             <button class="nav_button" method=""><a href="">Transactions</a></button>
             <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
-            <!-- <button class="nav_button" action="">Income</button>
-            <button class="nav_button" action="">Expenses</button> -->
             <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
+            <button class="nav_button" method="/calculator"><a href="/calculator">Calculator</a></button>
         </nav>
         
     </header>
@@ -51,7 +50,7 @@
         <br><br>
         <h1>List of Transactions</h1>
         <br>
-    
+
         <div class="trans_box">
             <table border="1" class="avg_table" style="width:70%">
                 <tr>
@@ -78,7 +77,6 @@
                 </tr>
                 {% endfor %}
             </table>
-            <!-- {{transactions}} -->
         </div>
     </center>
 </body>

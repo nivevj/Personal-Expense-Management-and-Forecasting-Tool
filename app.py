@@ -10,33 +10,21 @@ import numpy as np
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = '<your mongo uri>'
+app.config['MONGO_URI'] = 'mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net/expenseprediction'
 mongo = PyMongo(app)
 
-mongo_uri = "<your mongo uri>"
+mongo_uri = "mongodb+srv://nivedha:nivedhamongodb@cluster0.h0jt46s.mongodb.net"
 client = MongoClient(mongo_uri)
-db = client.expense_tracking
+db = client.expenseprediction
 collection = db.transactions
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/statistics')
-def statistics():
-    return render_template('statistics.html', graph='plot.png')
-
-# @app.route('/predict_expense')
-
-
 @app.route('/index')
 def index():
     return render_template('index.html')
-
-# @app.route('/transactions_month')
-# def transactions():
-#     return render_template('transactions_month.html')
-
 
 @app.route('/add_entry', methods=['POST'])
 def add_entry():
@@ -57,10 +45,6 @@ def add_entry():
     return redirect(url_for('index'))
 
 @app.route('/predict_expense')
-
-# def predict():
-#     return render_template('predict_expense.html')
-
 def predict_expense():
     # Implement prediction logic based on historical data
     # This could involve training a machine learning model on past entries
@@ -116,6 +100,21 @@ def transactions_this_month():
         '$or': [{'type': 'Expense'}, {'type': 'Income'}]
     }))
 
+    print(type(transactions[0]))
+
+    # for transaction in transactions:
+    #     print(transaction['date'])
+    #     print(type(transaction['date']))
+
+    # for transaction in transactions:
+    #     try:
+    #     # Attempt to parse date string in the format 'MM-DD-YY HH:MM'
+    #         transaction['date'] = datetime.strptime(transaction['date'], "%m/%d/%y %H:%M")
+    #     except ValueError:
+    #     # If parsing fails, try parsing date string in the format 'MM/DD/YYYY HH:MM'
+    #         transaction['date'] = datetime.strptime(transaction['date'], "%m-%d-%y %H:%M")
+    #transactions.sort(key=lambda x: x['date'], reverse=True)
+
     transaction = list(collection.find()) 
     transaction_df = pd.DataFrame(transaction)
     transaction_df['amount']=transaction_df['amount'].astype('float')
@@ -133,6 +132,13 @@ def transactions_this_month():
 
     return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance,current_expense=current_expense, predicted_month_expense=predicted_month_expense)
 
+@app.route('/calculator')
+def calc():
+    return render_template('calculator.html')
+
+@app.route('/statistics')
+def statistics():
+    return render_template('statistics.html', graph='plot.png')
 
 @app.route('/plot.png')
 def plot_png():
@@ -286,7 +292,7 @@ def plot2_png():
 
     return send_file(output, mimetype='image/png')
 
-# barchart for categories
+# Barchart for categories
 
 @app.route('/plot3.png')
 def plot3_png():
