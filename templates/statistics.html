@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h3 class="nav_title">Your Finance Manager</h3>
+        <nav>
+            <button class="nav_button" method="/home"><a href="/home">Home</a></button>
+            <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
+            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Dashboard</a></button>
+            <button class="nav_button" method=""><a href="">Statistics</a></button>
+            <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
+            <button class="nav_button" method="/tools"><a href="/tools">Tools</a></button>
+            <button class="nav_button" method="/logout"><a href="/logout">Logout</a></button>
+        </nav>
+        
+    </header>
+    <br><br>
+    
+    <h1>Statistics</h1>
+    <br>
+    <div class="stat_main">
+        <div class="buttons_container">
+            <button class="stat_btn" id="plot"><a href="/plot.png">Income</a></button>
+            <button class="stat_btn" id="plot1"><a href="/plot1.png">Expenses</a></button>
+            <button class="stat_btn" id="plot2"><a href="/plot2.png">Income & Expenses</a></button>
+            <button class="stat_btn" id="plot3"><a href="/plot3.png">Category-wise distribution</a></button>
+        </div>
+
+        <div class="stat_graph" height="10px">
+            <img class="plot_img" src="/plot.png" alt="no img">
+        </div>
+    </div>
+    
+    <script>
+        const buttons = document.querySelectorAll('.stat_btn');
+        const image = document.querySelector('.stat_graph img');
+
+        // Function to update image source based on button text
+        function updateImage(buttonText) {
+        const imageName = buttonText.toLowerCase().replace(/\s+/g, '');  // Extract image name from button text
+        image.src = `/${imageName}.png`;  // Set image source based on extracted name
+        }
+
+        // Add click event listener to each button
+        buttons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            const clickedButtonId = event.target.id;
+            // event.preventDefault(); // Prevent default form submission behavior
+            updateImage(clickedButtonId); // Update image based on button text content
+        });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h3 class="nav_title">Your Finance Manager</h3>
+        <nav>
+            <!-- <button class="nav_button_one" method="/about"><a href="/about">About the app</a></button> -->
+        </nav>
+    </header>
+    <br>
+    <h1>Signup now!</h1>
+    <br>
+    <form action="/register" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" placeholder="Enter username" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" placeholder="Enter email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Enter password" required>
+        <center>
+            <button class="add_btn"  type="submit">Register</button>
+        </center>      
+    </form>
+
+    <br>
+    <center>
+    <p class="tagline" style="color: white;">Already a user ?</p>
+    <button class="started_btn" method="/login"><a href="/login">Login</a></button>
+    </center>    
+
+</body>
+</html>
