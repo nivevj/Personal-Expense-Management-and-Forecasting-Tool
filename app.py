@@ -259,6 +259,41 @@ def conv():
 def calendar():
     return render_template('calendar.html')
 
+@app.route('/notes')
+def notes():
+    return render_template('notes.html')
+
+@app.route('/notes_action',methods=["GET",'POST'])
+def notes_action():
+    username = session['username']
+    if request.method == "POST":
+        note = request.form['note']
+        if note: 
+            user_notes = mongo.db[username + '_notes']
+            entry={
+                'note':note
+            }
+            user_notes.insert_one(entry)
+            return redirect(url_for('notes_action'))
+    user_notes=mongo.db[username + '_notes']
+    indexed_notes = list(user_notes.find())
+    return render_template("notes.html", notes= indexed_notes)
+
+# @app.route('/edit', methods=["GET","POST"])
+# def edit_note():
+#     if request.method == "POST":
+#         note_index = int(request.form.get("note_index"))
+#         new_note = request.form.get("new_note")
+#         notes[note_index] = new_note
+#     return redirect(url_for('notes'))
+
+# @app.route('/delete', methods=["GET","POST"])
+# def delete_note():
+#     if request.method == "POST":
+#         note_index = int(request.form.get("note_index"))
+#         del notes[note_index]
+#     return redirect(url_for('notes'))
+
 #statistics page
 @app.route('/statistics')
 def statistics():

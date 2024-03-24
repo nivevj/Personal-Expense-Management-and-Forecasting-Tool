@@ -225,6 +225,9 @@ a {
     justify-content: space-evenly;
     margin-bottom: 20px;
 }
+.notes{
+    flex-direction: column;
+}
 /* the boxes income, expenses and balance individually */
 .box {
     /* width: calc(33.33% - 10px); */

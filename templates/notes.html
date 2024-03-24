@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+    <title>Notes</title>
+</head>
+<body>
+    <header>
+        <h3 class="nav_title">Your Finance Manager</h3>
+        <nav>
+            <button class="nav_button" method="/home"><a href="/home">Home</a></button>
+            <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
+            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Dashobard</a></button>
+            <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
+            <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
+            <button class="nav_button" method="/tools"><a href="/tools">Tools</a></button>
+            <button class="nav_button" method="/logout"><a href="/logout">Logout</a></button>
+        </nav>
+        
+    </header>
+    <br>
+    <br>
+    <div class="container notes">
+        <div class="heading">
+            <h1>Notes</h1>
+        </div>
+        <div class="top">
+            <form method="POST" action="/notes_action">
+                <input type="text" name="note" placeholder="Enter a note"> 
+                <center>
+                <button class="add_btn" type="submit">Add Note</button>
+                </center>
+            </form>
+        </div>
+        <center>
+        <div class="todo">
+
+            {% for note in notes %}
+            <div class="text" style="background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;">
+                    <h3>{{ note.note }}</h3> 
+            </div>
+            <!-- <div class="buttons">
+                <form method="POST" action="/edit">
+                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="note_index" value="{{ index }}">
+                    <input type="text" name="new_note" placeholder="Edit Your note">
+                    <button type="submit">Edit</button>
+                </form>
+                <form method="POST" action="/delete">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="note_index" value="{{ index }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </div> -->
+            {% endfor %}
+        </div>
+        </center>
+    </div>
+
+</body>
+</html>
