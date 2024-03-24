@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     /* font-family: Arial, sans-serif; */
     background: linear-gradient(to right, #1a2151, #0c0f2b);
     /* background-repeat:inherit; */
@@ -11,74 +12,55 @@ html, body {
     font-variation-settings: "GRAD" 0;
 }
 
-  
-hr { 
+hr {
+    border-top: 2px solid black;
+    width: 40%;
+    margin-bottom: 55px;
+}
 
-    border-top: 2px solid black; 
+.main {
+    width: 50vw;
+    margin: auto;
+    padding: 30px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
 
-    width: 40%; 
+label {
+    font-size: 20px;
+}
 
-    margin-bottom: 55px; 
-} 
+.btn {
+    width: 200px;
+}
 
-  
-.main { 
+#finalAmount {
+    display: none;
+    margin: 50px auto;
+}
 
-    width: 50vw; 
-
-    margin: auto; 
-
-    padding: 30px; 
-
-    border-radius: 5px; 
-
-    background-color: rgba(0, 0, 0, 0.5); 
-
-    color: white; 
-} 
-
-  
-label { 
-
-    font-size: 20px; 
-} 
-
-  
-.btn { 
-
-    width: 200px; 
-} 
-
-  
-#finalAmount { 
-
-    display: none; 
-
-    margin: 50px auto; 
-} 
-
-  
-.finalValue { 
-
-    font-family: 'Amiri', serif; 
-} 
+.finalValue {
+    font-family: 'Amiri', serif;
+}
 
 .textwhite {
     color: white;
 }
 
-nav{
+nav {
     margin-left: 15%;
-    
+
 }
 
-.nav_title{
+.nav_title {
     color: #214761;
     font-size: 25px;
     margin-top: 0px;
     margin-left: 30px;
 }
-.nav_button{
+
+.nav_button {
     background-color: white;
     height: 33px;
     border-radius: 5px;
@@ -94,30 +76,29 @@ nav{
     font-variation-settings: "GRAD" 0;
 }
 
-.nav_button:hover{
+.nav_button:hover {
     background-color: rgb(234, 234, 234);
-    transform: scale(1.1,1.1);
+    transform: scale(1.1, 1.1);
     transition-duration: 0.5s;
     border-radius: 15px;
     /* color: white; */
 }
 
 a {
-    color: #214761; /* Navy blue link color */
+    color: #214761;
+    /* Navy blue link color */
     text-decoration: none;
     display: inline-block;
     /* margin-top: 10px; */
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
 
-header{
+header {
     background-color: rgb(255, 255, 255);
     height: 70px;
     padding-top: 25px;
     display: flex;
-    
-} 
-
+}

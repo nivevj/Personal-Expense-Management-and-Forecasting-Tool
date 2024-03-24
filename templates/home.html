@@ -24,16 +24,17 @@
         <nav>
             <button class="nav_button" method=""><a href="">Home</a></button>
             <button class="nav_button" method="/index"><a href="/index">Add Transaction</a></button>
-            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
+            <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Dashboard</a></button>
             <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
             <button class="nav_button" method="/predict_expense"><a href="/predict_expense">Predict Expenses</a></button>
             <button class="nav_button" method="/tools"><a href="/tools">Tools</a></button>
+            <button class="nav_button" method="/logout"><a href="/logout">Logout</a></button>
         </nav>
         
     </header>
     <br>
     <div class="home_container">
-        <h1 class="home_heading">Welcome to your finance manager</h1>
+        <h1 class="home_heading">Welcome {{ user.username.upper() }}, <br> to your finance manager</h1>
         <p class="tagline">Manage your finances smartly with your personal finance manager</p>
         <br>
         <a href="/index" class="started_btn">Get Started</a>

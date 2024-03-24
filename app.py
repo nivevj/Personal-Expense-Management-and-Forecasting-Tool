@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from flask_pymongo import PyMongo
 from datetime import datetime
 from pymongo import MongoClient
@@ -7,6 +7,9 @@ import pandas as pd
 from io import BytesIO
 from matplotlib.figure import Figure
 import numpy as np
+
+import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -18,9 +21,60 @@ client = MongoClient(mongo_uri)
 db = client.expenseprediction
 collection = db.transactions
 
+#user authentication db
+app.secret_key = os.urandom(24)
+user_db=client.authentication
+users_collection= user_db.users
+
 @app.route('/')
+def sample():
+    return render_template('sample.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        if users_collection.find_one({'username': username}):
+            return 'Username already exists!'
+
+        hashed_password = generate_password_hash(password)
+        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password})
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = users_collection.find_one({'username': username})
+
+        if not user or not check_password_hash(user['password'], password):
+            return 'Invalid username or password!'
+
+        session['username'] = username
+        return redirect(url_for('home'))
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('sample'))
+
+@app.route('/home')
 def home():
-    return render_template('home.html')
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    username = session['username']
+    user = users_collection.find_one({'username': username})
+    return render_template('home.html', user=user)
 
 @app.route('/index')
 def index():

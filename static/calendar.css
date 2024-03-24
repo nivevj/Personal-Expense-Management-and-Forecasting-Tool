@@ -12,8 +12,7 @@ html, body {
 }
 
 nav{
-    margin-left: 15%;
-    
+    margin-left: 15%; 
 }
 
 .nav_title{
@@ -62,5 +61,4 @@ header{
     height: 70px;
     padding-top: 25px;
     display: flex;
-    
 } 

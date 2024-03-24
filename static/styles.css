@@ -20,12 +20,11 @@ header{
     background-color: rgb(255, 255, 255);
     height: 50px;
     padding-top: 25px;
-    display: flex;
-    
+    display: flex; 
 }
+
 nav{
     margin-left: 15%;
-    
 }
 
 .nav_title{
@@ -38,7 +37,7 @@ nav{
     background-color: white;
     height: 33px;
     border-radius: 5px;
-    margin-left: 20px;
+    margin-left: 15px;
     border-color: white;
     cursor: pointer;
     border: 2px;
@@ -51,6 +50,30 @@ nav{
 }
 
 .nav_button:hover{
+    background-color: rgb(234, 234, 234);
+    transform: scale(1.1,1.1);
+    transition-duration: 0.5s;
+    border-radius: 15px;
+    /* color: white; */
+}
+
+.nav_button_one{
+    background-color: white;
+    height: 33px;
+    border-radius: 5px;
+    margin-left: 800px;
+    border-color: white;
+    cursor: pointer;
+    border: 2px;
+    font-size: 20px;
+    padding: 0px 17px;
+    font-family: "Signika", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+}
+
+.nav_button_one:hover{
     background-color: rgb(234, 234, 234);
     transform: scale(1.1,1.1);
     transition-duration: 0.5s;
@@ -73,6 +96,9 @@ label {
 }
 
 input[type="number"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
 select,
 textarea {
     width: 100%;
