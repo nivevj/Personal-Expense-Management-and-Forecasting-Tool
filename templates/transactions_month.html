@@ -26,31 +26,65 @@
     <div class="container">
         <div class="box">
             <h2>Income</h2>
-            <h2 class="income">₹{{income_amount}}</h2>
+            <h2 class="income">₹{{income_amount_month}}</h2>
         </div>
         <div class="box">
             <h2>Expenses</h2>
-            <h2 class="expenses">₹{{expense_amount}}</h2>
+            <h2 class="expenses">₹{{expense_amount_month}}</h2>
         </div>
         <div class="box">
             <h2>Total Balance</h2>
-            <h2 class="t_balance">₹{{total_balance}}</h2>
+            <h2 class="t_balance">₹{{total_balance_month}}</h2>
         </div>
     </div>
     <br>
     <center>
 
-        {% if current_expense > predicted_month_expense %}
+        {% if expense_amount_month > predicted_month_expense %}
             <br>
             <div class="alert">
-            **Warning!** Current monthly expense exceeded the predicted monthly expense by ₹{{current_expense - predicted_month_expense}}.
+            **Warning!** Current monthly expense exceeded the predicted monthly expense by ₹{{expense_amount_month - predicted_month_expense}}.
             </div>
         {% endif %}
 
         <br><br>
-        <h1>List of Transactions</h1>
+        <h1>List of Transactions in this month</h1>
         <br>
+    
+        <div class="trans_box">
+            <table border="1" class="avg_table" style="width:70%">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Note</th>
+                </tr>
+                {% for transaction in transactions_month %}
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.type }}</td>
+                    {% if transaction.type == 'Expense' %}
+                        <td style="color: red">
+                    {% else %}
+                        <td style="color: green">
+                    {% endif %}
 
+                    {{ transaction.amount }}
+                    </td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.note }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+
+
+        <br><br>
+        <h1>List of all Transactions</h1>
+        <br>
+    
         <div class="trans_box">
             <table border="1" class="avg_table" style="width:70%">
                 <tr>
@@ -77,6 +111,7 @@
                 </tr>
                 {% endfor %}
             </table>
+            <!-- {{transactions}} -->
         </div>
     </center>
 </body>

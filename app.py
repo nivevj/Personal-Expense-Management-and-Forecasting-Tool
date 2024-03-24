@@ -96,25 +96,11 @@ def predict_expense():
 
 @app.route('/transactions_this_month')
 def transactions_this_month():
+    
+    # total dataset
     transactions = list(mongo.db.transactions.find({
         '$or': [{'type': 'Expense'}, {'type': 'Income'}]
-    }))
-
-    print(type(transactions[0]))
-
-    # for transaction in transactions:
-    #     print(transaction['date'])
-    #     print(type(transaction['date']))
-
-    # for transaction in transactions:
-    #     try:
-    #     # Attempt to parse date string in the format 'MM-DD-YY HH:MM'
-    #         transaction['date'] = datetime.strptime(transaction['date'], "%m/%d/%y %H:%M")
-    #     except ValueError:
-    #     # If parsing fails, try parsing date string in the format 'MM/DD/YYYY HH:MM'
-    #         transaction['date'] = datetime.strptime(transaction['date'], "%m-%d-%y %H:%M")
-    #transactions.sort(key=lambda x: x['date'], reverse=True)
-
+    }).sort([('date', -1)]))
     transaction = list(collection.find()) 
     transaction_df = pd.DataFrame(transaction)
     transaction_df['amount']=transaction_df['amount'].astype('float')
@@ -125,12 +111,31 @@ def transactions_this_month():
     expense_df['amount']=expense_df['amount'].astype('int')
     expense_amount=expense_df.amount.sum()
     income_amount=income_df.amount.sum()
-    total_balance=income_amount-expense_amount
+    total_balance=income_amount-expense_amount 
 
-    current_expense = 100
+    # for current month
+    transactions_month = list(mongo.db.transactions.find({
+    '$or': [{'type': 'Expense'}, {'type': 'Income'}],
+    'date': {'$regex': '^2'}}).sort([('date', -1)]))
+
+    transaction_month = list(collection.find()) 
+    transaction_df_month = pd.DataFrame(transactions_month)
+    transaction_df_month['amount']=transaction_df_month['amount'].astype('float')
+    missing_values_month=transaction_df_month.columns[transaction_df.isna().any()]
+    income_df_month=transaction_df_month[transaction_df_month['type']== 'Income']
+    income_df_month['amount']=income_df_month['amount'].astype('int')
+    expense_df_month=transaction_df_month[transaction_df_month['type']== 'Expense']
+    expense_df_month['amount']=expense_df_month['amount'].astype('int')
+    expense_amount_month=expense_df_month.amount.sum()
+    income_amount_month=income_df_month.amount.sum()
+    total_balance_month=income_amount_month-expense_amount_month 
+
     predicted_month_expense = 80
 
-    return render_template('transactions_month.html', transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,total_balance=total_balance,current_expense=current_expense, predicted_month_expense=predicted_month_expense)
+    return render_template('transactions_month.html',transactions_month=transactions_month, 
+    transactions=transactions,expense_amount=expense_amount,income_amount=income_amount,
+    total_balance=total_balance,total_balance_month=total_balance_month,income_amount_month=income_amount_month,
+    expense_amount_month=expense_amount_month, predicted_month_expense=predicted_month_expense)
 
 @app.route('/calculator')
 def calc():
