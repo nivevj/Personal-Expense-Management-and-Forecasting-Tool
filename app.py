@@ -110,7 +110,9 @@ def add_entry():
 @app.route('/predict_expense')
 def predict_expense():
     # Implement prediction logic based on historical data
-    transaction = list(collection.find()) 
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    transaction = list(user_transactions.find()) 
     transaction_df = pd.DataFrame(transaction)
     transaction_df['amount']=transaction_df['amount'].astype('float')
     missing_values=transaction_df.columns[transaction_df.isna().any()]
@@ -165,10 +167,12 @@ def predict_expense():
 def transactions_this_month():
     
     # total dataset
-    transactions = list(mongo.db.transactions.find({
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    transactions = list(user_transactions.find({
         '$or': [{'type': 'Expense'}, {'type': 'Income'}]
     }).sort([('date', -1)]))
-    transaction = list(collection.find()) 
+    transaction = list(user_transactions.find()) 
     transaction_df = pd.DataFrame(transaction)
     transaction_df['amount']=transaction_df['amount'].astype('float')
     missing_values=transaction_df.columns[transaction_df.isna().any()]
@@ -181,11 +185,11 @@ def transactions_this_month():
     total_balance=income_amount-expense_amount 
 
     # for current month
-    transactions_month = list(mongo.db.transactions.find({
+    transactions_month = list(user_transactions.find({
     '$or': [{'type': 'Expense'}, {'type': 'Income'}],
     'date': {'$regex': '^2'}}).sort([('date', -1)]))
 
-    transaction_month = list(collection.find()) 
+    transaction_month = list(user_transactions.find()) 
     transaction_df_month = pd.DataFrame(transactions_month)
     transaction_df_month['amount']=transaction_df_month['amount'].astype('float')
     missing_values_month=transaction_df_month.columns[transaction_df.isna().any()]
@@ -198,7 +202,7 @@ def transactions_this_month():
     total_balance_month=income_amount_month-expense_amount_month 
 
     #predict current month expense
-    transaction = list(collection.find()) 
+    transaction = list(user_transactions.find()) 
     transaction_df = pd.DataFrame(transaction)
     transaction_df['amount']=transaction_df['amount'].astype('float')
     income_df=transaction_df[transaction_df['type']== 'Income']
@@ -270,8 +274,9 @@ def plot_png():
     axis1 = fig.add_subplot(1, 1, 1)  # Use a single subplot
     axis1.set_title('Income')
 
-
-    data = list(collection.find({}))
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    data = list(user_transactions.find({}))
 
     # Convert 'date' field to datetime
     for entry in data:
@@ -318,7 +323,9 @@ def plot1_png():
     axis2 = fig.add_subplot(1, 1, 1)  # 3 rows, 1 column, subplot 1
     axis2.set_title('Expense')
     
-    data = list(collection.find({}))
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    data = list(user_transactions.find({}))
 
     # Convert 'date' field to datetime
     for entry in data:
@@ -367,7 +374,9 @@ def plot2_png():
     axis3 = fig.add_subplot(4, 1, 3)  # 3 rows, 1 column, subplot 3
     axis3.set_title('Income vs Expense')
 
-    data = list(collection.find({}))
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    data = list(user_transactions.find({}))
 
     # Convert 'date' field to datetime
     for entry in data:
@@ -423,7 +432,9 @@ def plot3_png():
     axis4 = fig.add_subplot(1, 1, 1)  # 3 rows, 1 column, subplot 3
     axis4.set_title('Expense Categories') 
 
-    data = list(collection.find({}))
+    username = session['username']
+    user_transactions = mongo.db[username + '_transactions']
+    data = list(user_transactions.find({}))
 
     # Convert 'date' field to datetime
     for entry in data:
