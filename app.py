@@ -7,7 +7,6 @@ import pandas as pd
 from io import BytesIO
 from matplotlib.figure import Figure
 import numpy as np
-
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -26,10 +25,12 @@ app.secret_key = os.urandom(24)
 user_db=client.authentication
 users_collection= user_db.users
 
+#start page
 @app.route('/')
 def sample():
     return render_template('sample.html')
 
+#signup page
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -46,6 +47,7 @@ def register():
 
     return render_template('register.html')
 
+#login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -62,11 +64,13 @@ def login():
 
     return render_template('login.html')
 
+#logout page
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('sample'))
 
+#home page
 @app.route('/home')
 def home():
     if 'username' not in session:
@@ -76,12 +80,15 @@ def home():
     user = users_collection.find_one({'username': username})
     return render_template('home.html', user=user)
 
+#add transaction page
 @app.route('/index')
 def index():
     return render_template('index.html')
 
+#add entry from add transaction 
 @app.route('/add_entry', methods=['POST'])
 def add_entry():
+    username = session['username']
     amount = float(request.form['amount'])
     entry_type = request.form['type']
     category = request.form['category']
@@ -95,9 +102,11 @@ def add_entry():
         'date': datetime.utcnow().strftime('%m-%d-%y %H:%M')
     }
 
-    mongo.db.transactions.insert_one(entry)
+    user_transactions = mongo.db[username + '_transactions']
+    user_transactions.insert_one(entry)
     return redirect(url_for('index'))
 
+#predict expense page
 @app.route('/predict_expense')
 def predict_expense():
     # Implement prediction logic based on historical data
@@ -151,6 +160,7 @@ def predict_expense():
 
     return render_template('predict_expense.html', predicted_expense=next_month_prediction,avg_spending_category=avg_spending_category,monthly_spending=monthly_spending, monthly_income=monthly_income, current_month_prediction=current_month_prediction) 
 
+#dashboard page
 @app.route('/transactions_this_month')
 def transactions_this_month():
     
@@ -225,26 +235,32 @@ def transactions_this_month():
     total_balance=total_balance,total_balance_month=total_balance_month,income_amount_month=income_amount_month,
     expense_amount_month=expense_amount_month, predicted_month_expense=current_month_prediction)
 
+#tools page
 @app.route('/tools')
 def tools():
     return render_template('tools.html')
 
+#calculator
 @app.route('/calculator')
 def calc():
     return render_template('calculator.html')
 
+#currency converter
 @app.route('/converter')
 def conv():
     return render_template('converter.html')
 
+#calendar
 @app.route('/calendar')
 def calendar():
     return render_template('calendar.html')
 
+#statistics page
 @app.route('/statistics')
 def statistics():
     return render_template('statistics.html', graph='plot.png')
 
+#income plot
 @app.route('/plot.png')
 def plot_png():
     fig = Figure(figsize=(10, 7))  # Adjust figure size if needed
@@ -292,8 +308,7 @@ def plot_png():
 
     return send_file(output, mimetype='image/png')
 
-# Expense 
-    
+#expense plot 
 @app.route('/plot1.png')
 def plot1_png():
     fig = Figure(figsize=(10,6)) 
@@ -340,6 +355,7 @@ def plot1_png():
 
     return send_file(output, mimetype='image/png') 
 
+#income vs expense plot
 @app.route('/plot2.png')
 def plot2_png():
     fig = Figure(figsize=(10, 6))  # Adjust figsize here if needed
@@ -397,8 +413,7 @@ def plot2_png():
 
     return send_file(output, mimetype='image/png')
 
-# Barchart for categories
-
+#categories barplot
 @app.route('/plot3.png')
 def plot3_png():
     fig = Figure(figsize=(10, 7))  # Adjust figure size if needed
@@ -447,7 +462,6 @@ def plot3_png():
     output.seek(0)
 
     return send_file(output, mimetype='image/png')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
