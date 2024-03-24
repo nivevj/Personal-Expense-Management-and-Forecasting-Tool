@@ -245,11 +245,22 @@ a {
 .stat_main{
     display: flex;
 }
+
 .buttons_container{
     display: flex;
     flex-direction: column;
     margin-left: 10%;
     margin-right: 10%;
+}
+.tool_main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool_main .buttons_container{
+    display: flex;
+    flex-direction: row;
 }
 
 .stat_btn{

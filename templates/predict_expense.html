@@ -18,7 +18,7 @@
             <button class="nav_button" method="/transactions_this_month"><a href="/transactions_this_month">Transactions</a></button>
             <button class="nav_button" method="/statistics"><a href="/statistics">Statistics</a></button>
             <button class="nav_button" method=""><a href="">Predict Expenses</a></button>
-            <button class="nav_button" method="/calculator"><a href="/calculator">Calculator</a></button>
+            <button class="nav_button" method="/tools"><a href="/tools">Tools</a></button>
         </nav>
         
     </header>
@@ -28,10 +28,25 @@
     <div class="predict_box">
         <h1 class="pr_h">Predict Expense for the next month</h1>
         <p class="pr_p">₹{{ predicted_expense }}</p>
-
     </div>
 
     <br><br>
+
+    
+    <!--
+      To view the sum of expense month wise 
+      <ul>
+        {% for month, spending in monthly_spending.items() %}
+          <li>{{ month.strftime('%B %Y') }}: ₹{{ spending }}</li>
+        {% endfor %}
+      </ul>
+
+      To view the sum of income month wise
+      <ul>
+        {% for month, spending in monthly_income.items() %}
+          <li>{{ month.strftime('%B %Y') }}: ₹{{ spending }}</li>
+        {% endfor %}
+      </ul> -->
 
     <div class="avg_box">
         <h1 class="pr_h">Average Spending Category</h1>
